@@ -1,0 +1,43 @@
+services:
+  task-net-api:
+    build:
+      context: .
+      dockerfile: Task.NET/Dockerfile
+    ports:
+      - "8080:80"
+      - "8081:443"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=db;Database=TaskDb;User=sa;Password=Password123!;
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=your-pfx-password
+    volumes:
+      - ${APPDATA}/ASP.NET/Https:/https:ro
+    depends_on:
+      - db
+    networks:
+      - task-net-network
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:80"]
+        interval: 30s
+        retries: 3
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sql_server
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Password123!
+    ports:
+      - "1433:1433"
+    volumes:
+      - sql_data:/var/opt/mssql
+    networks:
+      - task-net-network
+
+volumes:
+  sql_data:
+
+networks:
+  task-net-network:
+    driver: bridge

@@ -1,0 +1,28 @@
+# Ignore the bin and obj directories, which are generated during the build
+bin/
+obj/
+
+# Ignore the .git directory, if your project is under version control
+.git/
+
+# Ignore any IDE specific directories or files
+.vs/
+.idea/
+
+# Ignore build artifacts
+*.log
+*.pdb
+*.user
+
+# Ignore the Dockerfile (if you are building the project from another location)
+Dockerfile
+docker-compose.yml
+
+# Ignore any local configuration files (such as secrets or credentials)
+appsettings.Development.json
+
+# Ignore node_modules or other dependency directories (if you have them)
+node_modules/
+
+# Ignore temporary files (macOS specific)
+.DS_Store
